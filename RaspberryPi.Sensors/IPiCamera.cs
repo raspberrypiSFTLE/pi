@@ -6,7 +6,9 @@ namespace RaspberryPi.Sensors
 {
     public interface IPiCamera
     {
-        void CaptureImage();
+        void StartCapturingImages();
+
+        void StopCapturingImages();
 
         void CaptureStream();
 

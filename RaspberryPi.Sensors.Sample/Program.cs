@@ -19,7 +19,13 @@ namespace RaspberryPi.Sensors.Sample
 
             try
             {
-                var piCamera = new PiCamera();
+
+                var firstArgument = args[0];
+                var snapshotInterval = firstArgument.Split(':')[1];
+
+                Console.WriteLine(snapshotInterval.ToString());
+
+                var piCamera = new PiCamera(int.Parse(snapshotInterval));
                 var leds = new LEDs();
                 var pir = new PirHC501(piCamera, leds);
                 pir.Start();
@@ -256,13 +262,13 @@ namespace RaspberryPi.Sensors.Sample
             }
         }
 
-        private static void StartPir()
-        {
-            var piCamera = new PiCamera();
-            var pir = new PirHC501(piCamera, null);
-            pir.Start();
-            Console.ReadKey();
-        }
+        //private static void StartPir()
+        //{
+        //    var piCamera = new PiCamera();
+        //    var pir = new PirHC501(piCamera, null);
+        //    pir.Start();
+        //    Console.ReadKey();
+        //}
 
         private static void StartCamera()
         {
