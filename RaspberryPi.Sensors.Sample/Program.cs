@@ -20,7 +20,8 @@ namespace RaspberryPi.Sensors.Sample
             try
             {
                 var piCamera = new PiCamera();
-                var pir = new PirHC501(piCamera);
+                var leds = new LEDs();
+                var pir = new PirHC501(piCamera, leds);
                 pir.Start();
                 Console.ReadKey();
 
@@ -258,7 +259,7 @@ namespace RaspberryPi.Sensors.Sample
         private static void StartPir()
         {
             var piCamera = new PiCamera();
-            var pir = new PirHC501(piCamera);
+            var pir = new PirHC501(piCamera, null);
             pir.Start();
             Console.ReadKey();
         }
@@ -278,10 +279,10 @@ namespace RaspberryPi.Sensors.Sample
         {
             bool value = true;
 
-            var blinkingPin = Pi.Gpio[15];
+            var blinkingPin = Pi.Gpio[21];
             blinkingPin.PinMode = GpioPinDriveMode.Output;
 
-            for (var i = 0; i < 20; i++)
+            for (var i = 0; i < 100000; i++)
             {
                 value = !value;
                 blinkingPin.Write(value);

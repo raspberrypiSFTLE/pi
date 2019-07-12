@@ -15,8 +15,9 @@ namespace RaspberryPi.Sensors
         private GpioPin _ledPin;
 
         private IPiCamera _piCamera;
+        private ILEDs _leds;
 
-        public PirHC501(IPiCamera piCamera)
+        public PirHC501(IPiCamera piCamera, ILEDs leds)
         {
             //_ledPin = (GpioPin)Pi.Gpio[BcmPin.Gpio23];
             //_ledPin.PinMode = GpioPinDriveMode.Output;
@@ -26,6 +27,7 @@ namespace RaspberryPi.Sensors
             _pin.PinMode = GpioPinDriveMode.Input;
 
             _piCamera = piCamera;
+            _leds = leds;
         }
 
         public void Start()
@@ -40,7 +42,12 @@ namespace RaspberryPi.Sensors
             if (_isActivated)
             {
                 Console.WriteLine($"Motion detected: {DateTime.Now.ToLongDateString()}");
+                _leds.Update(ProcessState.MotionDetected);
                 _piCamera.CaptureImage();
+            }
+            else
+            {
+                _leds.Update(ProcessState.Sleep);
             }
 
             Console.WriteLine($"Pin Activated...{_isActivated}");

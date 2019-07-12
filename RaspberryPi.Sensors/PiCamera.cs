@@ -15,9 +15,10 @@ namespace RaspberryPi.Sensors
             var pictureBytes = Pi.Camera.CaptureImageJpeg(640, 480);
             var captureName = $"image_{ _imageCounter}";
             var targetPath = $"/home/pi/camera-captures/{captureName}.jpg";
+
             _imageCounter++;
-            int capturesCount = Directory.GetFiles($"/home/pi/camera-captures/").Length;
-            if (capturesCount >= 100)
+            //int capturesCount = Directory.GetFiles($"/home/pi/camera-captures/").Length;
+            if (_imageCounter >= 100)
             {
                 //reset counter
                 _imageCounter = 1;
