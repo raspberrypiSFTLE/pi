@@ -1,15 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using Unosquare.RaspberryIO;
-using Unosquare.RaspberryIO.Abstractions;
-using Unosquare.RaspberryIO.Camera;
-using Unosquare.Swan.Formatters;
-using Unosquare.WiringPi;
+﻿using System;
 
 namespace RaspberryPi.Sensors.Sample
 {
