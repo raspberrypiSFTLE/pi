@@ -16,58 +16,65 @@ namespace RaspberryPi.Sensors.Sample
             Console.Write("Initialize WiringPi ...");
             Pi.Init<BootstrapWiringPi>();
             Console.WriteLine("Done");
+
             try
             {
-                Console.WriteLine("Select sensor:");
-                Console.WriteLine("[1]: BMP180");
-                Console.WriteLine("[2]: GY-30");
-                Console.WriteLine("[3]: DHT");
-                Console.WriteLine("[4]: Led");
-                Console.WriteLine("[5]: Button and Led");
-                Console.WriteLine("[6]: PWM");
-                Console.WriteLine("[7]: PWM");
-                Console.WriteLine("[8]: Pir");
-                Console.WriteLine("[9]: Camera");
+                var piCamera = new PiCamera();
+                var pir = new PirHC501(piCamera);
+                pir.Start();
+                Console.ReadKey();
 
-                var inputOption = Console.ReadLine();
-                var option = int.Parse(inputOption);
 
-                switch (option)
-                {
-                    case 1:
-                        RunBMP180();
-                        break;
-                    case 2:
-                        RunGy30();
-                        break;
-                    case 3:
-                        RunDHT11();
-                        break;
-                    case 4:
-                        LedStart();
-                        break;
-                    case 5:
-                        ButtonWithLed();
-                        break;
-                    case 6:
-                        HardwarePwm();
-                        break;
-                    case 7:
-                        SoftwarePwm();
-                        break;
-                    case 8:
-                        StartPir();
-                        break;
-                    case 9:
-                        StartCamera();
-                        break;
-                    case 10:
-                        LedRedRGB();
-                        break;
-                    case 11:
-                        TestCaptureVideo();
-                        break;
-                }
+                //Console.WriteLine("Select sensor:");
+                //Console.WriteLine("[1]: BMP180");
+                //Console.WriteLine("[2]: GY-30");
+                //Console.WriteLine("[3]: DHT");
+                //Console.WriteLine("[4]: Led");
+                //Console.WriteLine("[5]: Button and Led");
+                //Console.WriteLine("[6]: PWM");
+                //Console.WriteLine("[7]: PWM");
+                //Console.WriteLine("[8]: Pir");
+                //Console.WriteLine("[9]: Camera");
+
+                //var inputOption = Console.ReadLine();
+                //var option = int.Parse(inputOption);
+
+                //switch (option)
+                //{
+                //    case 1:
+                //        RunBMP180();
+                //        break;
+                //    case 2:
+                //        RunGy30();
+                //        break;
+                //    case 3:
+                //        RunDHT11();
+                //        break;
+                //    case 4:
+                //        LedStart();
+                //        break;
+                //    case 5:
+                //        ButtonWithLed();
+                //        break;
+                //    case 6:
+                //        HardwarePwm();
+                //        break;
+                //    case 7:
+                //        SoftwarePwm();
+                //        break;
+                //    case 8:
+                //        StartPir();
+                //        break;
+                //    case 9:
+                //        StartCamera();
+                //        break;
+                //    case 10:
+                //        LedRedRGB();
+                //        break;
+                //    case 11:
+                //        TestCaptureVideo();
+                //        break;
+                //}
             }
             catch (Exception e)
             {
@@ -250,7 +257,8 @@ namespace RaspberryPi.Sensors.Sample
 
         private static void StartPir()
         {
-            var pir = new PirHC501();
+            var piCamera = new PiCamera();
+            var pir = new PirHC501(piCamera);
             pir.Start();
             Console.ReadKey();
         }
@@ -258,7 +266,7 @@ namespace RaspberryPi.Sensors.Sample
         private static void StartCamera()
         {
             var pictureBytes = Pi.Camera.CaptureImageJpeg(640, 480);
-            var targetPath = "/home/pi/camera-test/image.jpg";
+            var targetPath = $"/home/pi/camera-captures/image.jpg";
             if (File.Exists(targetPath))
                 File.Delete(targetPath);
 
