@@ -10,35 +10,26 @@ namespace RaspberryPi.Sensors
 {
     public class PirHC501
     {
-
         private bool _isMotion = false;
         private GpioPin _pin;
 
-        private IPiCamera _piCamera;
-        private ILEDs _leds;
-
         private static Timer timer;
 
-        public PirHC501(IPiCamera piCamera, ILEDs leds)
+        public delegate void MotionStarted();
+        public delegate void MotionStopped();
+
+        public event MotionStarted motionStartedEvent;
+        public event MotionStopped motionStoppedEvent;
+
+        public PirHC501()
         {
             _pin = (GpioPin)Pi.Gpio[BcmPin.Gpio18];
             _pin.PinMode = GpioPinDriveMode.Input;
-
-            _piCamera = piCamera;
-            _leds = leds;
-        }
-
-        private static void TimerTask(object timerState)
-        {
-            ((PirHC501)timerState).ChangeState();
-            ((PirHC501)timerState).Reset();
-            //Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: starting a new callback.");
-            //var state = timerState as TimerState;
-            //Interlocked.Increment(ref state.Counter);
         }
 
         public void Start()
         {
+            // register callback whenever an interrupt takes place
             _pin.RegisterInterruptCallback(EdgeDetection.FallingEdge, ISRCallback);
         }
 
@@ -61,8 +52,15 @@ namespace RaspberryPi.Sensors
             }
             else
             {
+                // if there is no motion change state
                 ChangeState();
             }
+        }
+
+        private static void TimerTask(object timerState)
+        {
+            ((PirHC501)timerState).ChangeState();
+            ((PirHC501)timerState).Reset();
         }
 
         public void ChangeState()
@@ -72,14 +70,12 @@ namespace RaspberryPi.Sensors
             if (_isMotion)
             {
                 Console.WriteLine($"Motion detected: {DateTime.Now:dd:MM:yyyy HH:mm:ss.fff}");
-                _leds.Update(ProcessState.WaitingPersonDetection);
-                _piCamera.StartCapturingImages();
+                motionStartedEvent?.Invoke();
             }
             else
             {
                 Console.WriteLine($"No motion detected: {DateTime.Now:dd:MM:yyyy HH:mm:ss.fff}");
-                _leds.Update(ProcessState.Sleep);
-                _piCamera.StopCapturingImages();
+                motionStoppedEvent?.Invoke();
             }
         }
 

@@ -8,12 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Unosquare.Raspberry.IO" Version="0.18.1" />
     <PackageReference Include="Unosquare.WiringPi" Version="0.2.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\RaspberryPi.Sensors.Abstractions\RaspberryPi.Sensors.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>
