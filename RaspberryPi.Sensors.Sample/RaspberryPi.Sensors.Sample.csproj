@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <SshDeployHost>192.168.102.158</SshDeployHost>
+    <SshDeployHost>192.168.101.197</SshDeployHost>
     <SshDeployClean />
     <SshDeployTargetPath>/home/pi/video-test2</SshDeployTargetPath>
     <SshDeployUsername>pi</SshDeployUsername>
