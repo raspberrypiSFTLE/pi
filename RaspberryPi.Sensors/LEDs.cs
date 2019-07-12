@@ -14,7 +14,7 @@ namespace RaspberryPi.Sensors
         private GpioPin _greenPin;
         private GpioPin _bluePin;
 
-        private static Timer _blinckingTimer;
+        private static Timer _blinkingTimer;
 
         public LEDs()
         {
@@ -31,18 +31,18 @@ namespace RaspberryPi.Sensors
 
         public void Update(ProcessState state)
         {
-            if (state != ProcessState.WaitingPersonDetection && _blinckingTimer != null)
+            if (state != ProcessState.WaitingPersonDetection && _blinkingTimer != null)
             {
-                _blinckingTimer.Dispose();
-                _blinckingTimer = null;
+                _blinkingTimer.Dispose();
+                _blinkingTimer = null;
             }
 
             switch (state)
             {
                 case ProcessState.WaitingPersonDetection:
                     var blinkState = new BlinkState();
-                    _blinckingTimer = new Timer(
-                       callback: new TimerCallback(StartBlincking),
+                    _blinkingTimer = new Timer(
+                       callback: new TimerCallback(StartBlinking),
                        state: blinkState,
                        dueTime: 0,
                        period: 500);
@@ -74,7 +74,7 @@ namespace RaspberryPi.Sensors
             }
         }
 
-        private void StartBlincking(object state)
+        private void StartBlinking(object state)
         {
             var blinkState = (state as BlinkState);
             blinkState.BlinkValue = !blinkState.BlinkValue;
