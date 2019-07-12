@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RaspberryPi.Sensors", "RaspberryPi.Sensors\RaspberryPi.Sensors.csproj", "{030F1C37-3458-4157-BDAF-BD7353C25807}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RaspberryPi.Sensors.Abstractions", "RaspberryPi.Sensors.Abstractions\RaspberryPi.Sensors.Abstractions.csproj", "{910D4A1E-8B2B-405E-BCBC-9A13F9A3B6EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaspberryPi.Sensors.Sample", "RaspberryPi.Sensors.Sample\RaspberryPi.Sensors.Sample.csproj", "{D29A8093-5FF4-467D-B934-534D2B8FC909}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{030F1C37-3458-4157-BDAF-BD7353C25807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{030F1C37-3458-4157-BDAF-BD7353C25807}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{030F1C37-3458-4157-BDAF-BD7353C25807}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{030F1C37-3458-4157-BDAF-BD7353C25807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{910D4A1E-8B2B-405E-BCBC-9A13F9A3B6EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{910D4A1E-8B2B-405E-BCBC-9A13F9A3B6EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{910D4A1E-8B2B-405E-BCBC-9A13F9A3B6EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{910D4A1E-8B2B-405E-BCBC-9A13F9A3B6EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D29A8093-5FF4-467D-B934-534D2B8FC909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29A8093-5FF4-467D-B934-534D2B8FC909}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D29A8093-5FF4-467D-B934-534D2B8FC909}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D29A8093-5FF4-467D-B934-534D2B8FC909}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8EAB4114-ECBA-46B0-BB1A-0BADDD1F4AA4}
+	EndGlobalSection
+EndGlobal
