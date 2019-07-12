@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Abstractions;
 using Unosquare.WiringPi;
@@ -12,6 +13,8 @@ namespace RaspberryPi.Sensors
         private GpioPin _redPin;
         private GpioPin _greenPin;
         private GpioPin _bluePin;
+
+        private static Timer _blinckingTimer;
 
         public LEDs()
         {
@@ -28,8 +31,23 @@ namespace RaspberryPi.Sensors
 
         public void Update(ProcessState state)
         {
+            if (state != ProcessState.WaitingPersonDetection && _blinckingTimer != null)
+            {
+                _blinckingTimer.Dispose();
+                _blinckingTimer = null;
+            }
+
             switch (state)
             {
+                case ProcessState.WaitingPersonDetection:
+                    var blinkState = new BlinkState();
+                    _blinckingTimer = new Timer(
+                       callback: new TimerCallback(StartBlincking),
+                       state: blinkState,
+                       dueTime: 0,
+                       period: 500);
+                    break;
+
                 case ProcessState.Sleep:
                     _redPin.Write(false);
                     _greenPin.Write(false);
@@ -40,10 +58,6 @@ namespace RaspberryPi.Sensors
                     _greenPin.Write(false);
                     _redPin.Write(false);
                     _bluePin.Write(true);
-                    break;
-
-                case ProcessState.WaitingPersonDetection:
-                    
                     break;
 
                 case ProcessState.PersonRecognized:
@@ -59,5 +73,19 @@ namespace RaspberryPi.Sensors
                     break;
             }
         }
+
+        private void StartBlincking(object state)
+        {
+            var blinkState = (state as BlinkState);
+            blinkState.BlinkValue = !blinkState.BlinkValue;
+            _greenPin.Write(blinkState.BlinkValue);
+            _redPin.Write(blinkState.BlinkValue);
+            _bluePin.Write(false);
+        }
+    }
+
+    class BlinkState
+    {
+        public bool BlinkValue = true;
     }
 }

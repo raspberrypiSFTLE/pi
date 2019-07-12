@@ -11,11 +11,8 @@ namespace RaspberryPi.Sensors
     public class PirHC501
     {
 
-        private bool _keepActivated = true;
-        private bool _isActivated = false;
+        private bool _isMotion = false;
         private GpioPin _pin;
-
-        private GpioPin _ledPin;
 
         private IPiCamera _piCamera;
         private ILEDs _leds;
@@ -24,10 +21,6 @@ namespace RaspberryPi.Sensors
 
         public PirHC501(IPiCamera piCamera, ILEDs leds)
         {
-            //_ledPin = (GpioPin)Pi.Gpio[BcmPin.Gpio23];
-            //_ledPin.PinMode = GpioPinDriveMode.Output;
-            
-
             _pin = (GpioPin)Pi.Gpio[BcmPin.Gpio18];
             _pin.PinMode = GpioPinDriveMode.Input;
 
@@ -51,7 +44,7 @@ namespace RaspberryPi.Sensors
 
         private void ISRCallback()
         {
-            if (_isActivated )
+            if (_isMotion )
             {
                 if (timer == null)
                 {
@@ -74,22 +67,20 @@ namespace RaspberryPi.Sensors
 
         public void ChangeState()
         {
-            _isActivated = !_isActivated;
-            //_ledPin.Write(_isActivated);
-            if (_isActivated)
+            _isMotion = !_isMotion;
+
+            if (_isMotion)
             {
-                Console.WriteLine($"Motion detected: {DateTime.Now.ToLongDateString()}");
-                _leds.Update(ProcessState.MotionDetected);
+                Console.WriteLine($"Motion detected: {DateTime.Now:dd:MM:yyyy HH:mm:ss.fff}");
+                _leds.Update(ProcessState.WaitingPersonDetection);
                 _piCamera.StartCapturingImages();
             }
             else
             {
-                Console.WriteLine($"No motion detected: {DateTime.Now.ToLongDateString()}");
+                Console.WriteLine($"No motion detected: {DateTime.Now:dd:MM:yyyy HH:mm:ss.fff}");
                 _leds.Update(ProcessState.Sleep);
                 _piCamera.StopCapturingImages();
             }
-
-            //Console.WriteLine($"Pin Activated...{_isActivated}");
         }
 
         private void Reset()
