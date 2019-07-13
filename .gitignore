@@ -2,8 +2,40 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+
+# Visual Studio Code
+.vscode
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+/RaspberryPi.Sensors.Sample/bin/Debug
+/RaspberryPi.Sensors.Sample/obj
+/RaspberryPi.Sensors.Abstractions/bin/Debug
+/RaspberryPi.Sensors.Abstractions/obj
+/RaspberryPi.Sensors/bin/Debug
+/RaspberryPi.Sensors/obj
 /.vs
-/FaceDetection/bin/
-/FaceDetection/obj/
-/FaceDetection.Implementation/bin/
-/FaceDetection.Implementation/obj/

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Unosquare.RaspberryIO;
 using Unosquare.WiringPi;
+using FaceDetection.Implementation.Models;
 
 namespace FaceDetection.Implementation
 {
