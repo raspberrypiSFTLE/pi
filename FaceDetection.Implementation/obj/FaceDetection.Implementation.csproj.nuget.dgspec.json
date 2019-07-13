@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Hackaton\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj": {}
+    "C:\\Repos\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj": {}
   },
   "projects": {
-    "C:\\Hackaton\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj": {
+    "C:\\Repos\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Hackaton\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj",
+        "projectUniqueName": "C:\\Repos\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj",
         "projectName": "FaceDetection.Implementation",
-        "projectPath": "C:\\Hackaton\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj",
-        "packagesPath": "C:\\Users\\olv\\.nuget\\packages\\",
-        "outputPath": "C:\\Hackaton\\pi\\FaceDetection.Implementation\\obj\\",
+        "projectPath": "C:\\Repos\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj",
+        "packagesPath": "C:\\Users\\Razvan\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\pi\\FaceDetection.Implementation\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\olv\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Razvan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -41,6 +41,14 @@
       "frameworks": {
         "netcoreapp2.1": {
           "dependencies": {
+            "Microsoft.Extensions.Caching.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.Extensions.Caching.Memory": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.NETCore.App": {
               "suppressParent": "All",
               "target": "Package",
