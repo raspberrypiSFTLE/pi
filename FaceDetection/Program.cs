@@ -41,7 +41,7 @@ namespace FaceDetection
             }
 
             _cache = new MemoryCache(new MemoryCacheOptions());
-
+            replyBag = new ReplyBag();
             var processManager = new ProcessManager(snapshotIntervalSeconds, _cache, replyBag);
             processManager.Start();
 
