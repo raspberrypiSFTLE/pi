@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using OpenCvSharp;
+using OpenCvSharp.Extensions;
 
 namespace FaceDetection.Implementation
 {
@@ -23,6 +26,21 @@ namespace FaceDetection.Implementation
         public static bool IsDetectedFace(string imagePath, double scalingFactor = 0.5)
         {
             var imageMat = Cv2.ImRead(imagePath);
+            return DetectFacesRectanglesInternal(imageMat, scalingFactor);
+        }
+
+        public static bool IsDetectedFace(byte[] imageData, double scalingFactor = 0.5)
+        {
+            var imageDataClone = imageData.ToArray();
+            using (var ms = new MemoryStream(imageDataClone))
+            {
+                var imageMat = BitmapConverter.ToMat(new System.Drawing.Bitmap(ms));
+                return DetectFacesRectanglesInternal(imageMat, scalingFactor);
+            }
+        }
+
+        private static bool DetectFacesRectanglesInternal(Mat imageMat, double scalingFactor)
+        {
             var faces = DetectFaceRectangles(imageMat, scalingFactor);
             return faces.Length > 0;
         }

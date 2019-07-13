@@ -65,6 +65,14 @@ namespace FaceDetection.Implementation
             processInProgress = true;
             _leds.Update(ProcessState.WaitingPersonDetection);
 
+            if (!Faces.IsDetectedFace(imageContent))
+            {
+                _leds.Update(ProcessState.Sleep);
+                processInProgress = false;
+                Console.WriteLine($"No faces detected in image");
+                return;
+            }
+
             var persons = await _identifyPerson.IdentifyPersonAsync(imageContent).ConfigureAwait(false);
             Console.WriteLine($"Persons in capture:\n Person: {String.Join(";\n Person: ", persons.Select(p => p.ToString()).ToArray())}");
 
