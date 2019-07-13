@@ -1,4 +1,6 @@
 ﻿using System;
+using Unosquare.RaspberryIO;
+using Unosquare.WiringPi;
 
 namespace RaspberryPi.Sensors.Sample
 {
@@ -6,6 +8,7 @@ namespace RaspberryPi.Sensors.Sample
     {
         static void Main(string[] args)
         {
+            Pi.Init<BootstrapWiringPi>();
             int snapshotIntervalSeconds = 2;
             foreach (var argument in args)
             {
