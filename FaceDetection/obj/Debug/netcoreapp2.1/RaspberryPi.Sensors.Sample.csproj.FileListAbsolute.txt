@@ -1,0 +1,14 @@
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\obj\Debug\netcoreapp2.1\RaspberryPi.Sensors.Sample.csprojAssemblyReference.cache
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\obj\Debug\netcoreapp2.1\RaspberryPi.Sensors.Sample.csproj.CoreCompileInputs.cache
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\obj\Debug\netcoreapp2.1\RaspberryPi.Sensors.Sample.AssemblyInfoInputs.cache
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\obj\Debug\netcoreapp2.1\RaspberryPi.Sensors.Sample.AssemblyInfo.cs
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\obj\Debug\netcoreapp2.1\RaspberryPi.Sensors.Sample.csproj.CopyComplete
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\bin\Debug\netcoreapp2.1\FaceDetection.deps.json
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\bin\Debug\netcoreapp2.1\FaceDetection.runtimeconfig.json
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\bin\Debug\netcoreapp2.1\FaceDetection.runtimeconfig.dev.json
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\bin\Debug\netcoreapp2.1\FaceDetection.dll
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\bin\Debug\netcoreapp2.1\FaceDetection.pdb
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\bin\Debug\netcoreapp2.1\FaceDetection.Implementation.dll
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\bin\Debug\netcoreapp2.1\FaceDetection.Implementation.pdb
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\obj\Debug\netcoreapp2.1\FaceDetection.dll
+C:\Hackaton\pi\RaspberryPi.Sensors.Sample\obj\Debug\netcoreapp2.1\FaceDetection.pdb

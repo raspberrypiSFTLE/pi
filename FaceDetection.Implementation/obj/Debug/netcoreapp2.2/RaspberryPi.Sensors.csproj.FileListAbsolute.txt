@@ -1,0 +1,36 @@
+D:\Workspace\IoT Workshop\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.deps.json
+D:\Workspace\IoT Workshop\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.dll
+D:\Workspace\IoT Workshop\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.pdb
+D:\Workspace\IoT Workshop\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.Abstractions.dll
+D:\Workspace\IoT Workshop\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.Abstractions.pdb
+D:\Workspace\IoT Workshop\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.csprojAssemblyReference.cache
+D:\Workspace\IoT Workshop\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.csproj.CoreCompileInputs.cache
+D:\Workspace\IoT Workshop\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.AssemblyInfoInputs.cache
+D:\Workspace\IoT Workshop\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.AssemblyInfo.cs
+D:\Workspace\IoT Workshop\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.csproj.CopyComplete
+D:\Workspace\IoT Workshop\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.dll
+D:\Workspace\IoT Workshop\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.pdb
+C:\Workspace\raspberrypi-sensors-master Workshop2\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.deps.json
+C:\Workspace\raspberrypi-sensors-master Workshop2\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.dll
+C:\Workspace\raspberrypi-sensors-master Workshop2\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.pdb
+C:\Workspace\raspberrypi-sensors-master Workshop2\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.Abstractions.dll
+C:\Workspace\raspberrypi-sensors-master Workshop2\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.Abstractions.pdb
+C:\Workspace\raspberrypi-sensors-master Workshop2\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.csprojAssemblyReference.cache
+C:\Workspace\raspberrypi-sensors-master Workshop2\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.csproj.CoreCompileInputs.cache
+C:\Workspace\raspberrypi-sensors-master Workshop2\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.AssemblyInfoInputs.cache
+C:\Workspace\raspberrypi-sensors-master Workshop2\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.AssemblyInfo.cs
+C:\Workspace\raspberrypi-sensors-master Workshop2\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.csproj.CopyComplete
+C:\Workspace\raspberrypi-sensors-master Workshop2\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.dll
+C:\Workspace\raspberrypi-sensors-master Workshop2\raspberrypi-sensors-master\RaspberryPi.Sensors\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.pdb
+C:\Hackaton\pi\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.deps.json
+C:\Hackaton\pi\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.dll
+C:\Hackaton\pi\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.pdb
+C:\Hackaton\pi\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.Abstractions.dll
+C:\Hackaton\pi\RaspberryPi.Sensors\bin\Debug\netcoreapp2.2\RaspberryPi.Sensors.Abstractions.pdb
+C:\Hackaton\pi\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.csprojAssemblyReference.cache
+C:\Hackaton\pi\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.csproj.CoreCompileInputs.cache
+C:\Hackaton\pi\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.AssemblyInfoInputs.cache
+C:\Hackaton\pi\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.AssemblyInfo.cs
+C:\Hackaton\pi\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.csproj.CopyComplete
+C:\Hackaton\pi\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.dll
+C:\Hackaton\pi\RaspberryPi.Sensors\obj\Debug\netcoreapp2.2\RaspberryPi.Sensors.pdb
