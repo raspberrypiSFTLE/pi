@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Hackaton\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj": {}
+    "c:\\@Dev\\Hackaton\\Project\\Pi\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj": {}
   },
   "projects": {
-    "C:\\Hackaton\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj": {
+    "c:\\@Dev\\Hackaton\\Project\\Pi\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Hackaton\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj",
+        "projectUniqueName": "c:\\@Dev\\Hackaton\\Project\\Pi\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj",
         "projectName": "FaceDetection.Implementation",
-        "projectPath": "C:\\Hackaton\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj",
-        "packagesPath": "C:\\Users\\olv\\.nuget\\packages\\",
-        "outputPath": "C:\\Hackaton\\pi\\FaceDetection.Implementation\\obj\\",
+        "projectPath": "c:\\@Dev\\Hackaton\\Project\\Pi\\pi\\FaceDetection.Implementation\\FaceDetection.Implementation.csproj",
+        "packagesPath": "C:\\Users\\ThinkPad\\.nuget\\packages\\",
+        "outputPath": "c:\\@Dev\\Hackaton\\Project\\Pi\\pi\\FaceDetection.Implementation\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\olv\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ThinkPad\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -50,6 +50,14 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[12.0.2, )"
+            },
+            "OpenCvSharp4": {
+              "target": "Package",
+              "version": "[4.1.0.20190416, )"
+            },
+            "OpenCvSharp4.runtime.ubuntu.18.04-x64": {
+              "target": "Package",
+              "version": "[4.1.0.20190416, )"
             },
             "Unosquare.Raspberry.IO": {
               "target": "Package",
