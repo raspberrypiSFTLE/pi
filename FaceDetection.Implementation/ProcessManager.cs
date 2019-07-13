@@ -94,13 +94,31 @@ namespace FaceDetection.Implementation
             }
             else
             {
+                List<Person> personsToProcess = new List<Person>();
+                foreach (var person in persons)
+                {
+                    bool seen;
+                    bool alreadySeen = _cache.TryGetValue(person.match.personId, out seen);
+                    if (!alreadySeen)
+                    {
+                        _cache.Set(person.match.personId, true, new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(1)));
+                        personsToProcess.Add(person);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"I have seen {person.match.name} in the past minutes");
+                    }
+                }
                 _leds.Update(ProcessState.AllPersonsRecognized);
 
-                var replies = replyBuilder.BuildReplies(persons[0]);
+                if (personsToProcess.Count > 0)
+                {
+                    var replies = replyBuilder.BuildReplies(persons);
 
-                await ttsBuilder.BuildWavAsync(replies, wavFileName);
+                    await ttsBuilder.BuildWavAsync(replies, wavFileName);
 
-                soundPlayer.PlayOnPi(wavFileName);
+                    soundPlayer.PlayOnPi(wavFileName);
+                }
             }
 
             processInProgress = false;

@@ -64,7 +64,7 @@ namespace FaceDetection.Implementation
             }
 
             File.WriteAllBytes(targetPath, pictureBytes);
-            Console.WriteLine($"Took picture -- Byte count: {pictureBytes.Length}. File name: {captureName}");
+            Console.WriteLine($"Took picture -- Byte count: {pictureBytes.Length}. File name: {captureName}. Time: {DateTime.Now}");
         }
 
         public void CaptureStream()
