@@ -42,7 +42,6 @@ namespace FaceDetection.Implementation
             _led2_BluePin.PinMode = GpioPinDriveMode.Output;
         }
 
-
         public void Update(ProcessState state)
         {
             if (state != ProcessState.WaitingPersonDetection && _blinkingTimer != null)

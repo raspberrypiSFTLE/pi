@@ -5,6 +5,7 @@ using System.Text;
 using Unosquare.RaspberryIO;
 using Unosquare.WiringPi;
 using FaceDetection.Implementation.Models;
+using System.Threading;
 
 namespace FaceDetection.Implementation
 {
@@ -14,13 +15,15 @@ namespace FaceDetection.Implementation
         private PiCamera _piCamera;
         private IdentifyPerson _identifyPerson;
 
-        private volatile bool processInProgress = false;
+        private static object _lockObject = new object();
+
+        private AutoResetEvent autoresetEvent = new AutoResetEvent(true);
 
         public ProcessManager(int snapshotsInterval)
         {
             _leds = new LEDs();
             _piCamera = new PiCamera(snapshotsInterval);
-            _piCamera.imageCapturedEvent += _piCamera_imageCapturedEvent;
+            //_piCamera.imageCapturedEvent += _piCamera_imageCapturedEvent;
             _identifyPerson = new IdentifyPerson();
         }
 
@@ -32,10 +35,14 @@ namespace FaceDetection.Implementation
 
             try
             {
+                StartFlow();
+
                 var motionSensor = new PirHC501();
                 motionSensor.motionStartedEvent += MotionSensor_motionStartedEvent;
                 motionSensor.motionStoppedEvent += MotionSensor_motionStoppedEvent;
                 motionSensor.Start();
+
+                
             }
             catch (Exception e)
             {
@@ -45,48 +52,56 @@ namespace FaceDetection.Implementation
 
         private void MotionSensor_motionStoppedEvent()
         {
-            if (!processInProgress)
-            {
-                _leds.Update(ProcessState.Sleep);
-            }
+            //if (!processInProgress)
+            //{
+            //    _leds.Update(ProcessState.Sleep);
+            //}
 
-            processInProgress = false;
-            _piCamera.StopCapturingImages();
+            //_piCamera.StopCapturingImages();
         }
 
         private void MotionSensor_motionStartedEvent()
         {
-            processInProgress = true;
-            _leds.Update(ProcessState.WaitingPersonDetection);
-            _piCamera.StartCapturingImages();
+            //_piCamera.StartCapturingImages();
+            Console.WriteLine("Release semaphore");
+            autoresetEvent.Set();
         }
 
-        private async void _piCamera_imageCapturedEvent(byte[] imageContent)
+        private async void StartFlow()
         {
-            processInProgress = true;
-            _leds.Update(ProcessState.WaitingPersonDetection);
-
-            if (!Faces.IsDetectedFace(imageContent))
+            while (true)
             {
-                _leds.Update(ProcessState.Sleep);
-                processInProgress = false;
-                Console.WriteLine($"No faces detected in image");
-                return;
-            }
+                Console.WriteLine("Wait one");
 
-            var persons = await _identifyPerson.IdentifyPersonAsync(imageContent).ConfigureAwait(false);
-            Console.WriteLine($"Persons in capture:\n Person: {String.Join(";\n Person: ", persons.Select(p => p.ToString()).ToArray())}");
+                autoresetEvent.WaitOne();
+                Console.WriteLine("Continue process");
 
-            if (persons.Any(p => p.Unrecognized) || !persons.Any())
-            {
-                _leds.Update(ProcessState.NoPersonRecognized);
-            }
-            else
-            {
-                _leds.Update(ProcessState.AllPersonsRecognized);
-            }
+                byte[] imageContent;
+                lock (_lockObject)
+                {
+                    _leds.Update(ProcessState.WaitingPersonDetection);
 
-            processInProgress = false;
+                    imageContent = _piCamera.StartCapturingImages();
+
+                    if (!Faces.IsDetectedFace(imageContent))
+                    {
+                        _leds.Update(ProcessState.Sleep);
+                        Console.WriteLine($"No faces detected in image");
+                    }
+                }
+
+                var persons = await _identifyPerson.IdentifyPersonAsync(imageContent).ConfigureAwait(false);
+                Console.WriteLine($"Persons in capture:\n Person: {String.Join(";\n Person: ", persons.Select(p => p.ToString()).ToArray())}");
+
+                if (persons.Any(p => p.Unrecognized) || !persons.Any())
+                {
+                    _leds.Update(ProcessState.NoPersonRecognized);
+                }
+                else
+                {
+                    _leds.Update(ProcessState.AllPersonsRecognized);
+                }
+            }
         }
     }
 }

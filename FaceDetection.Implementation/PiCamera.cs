@@ -7,7 +7,7 @@ using Unosquare.RaspberryIO.Camera;
 
 namespace FaceDetection.Implementation
 {
-    public class PiCamera : IPiCamera
+    public class PiCamera
     {
         public delegate void ImageCaptured(byte[] imageContent);
         public event ImageCaptured imageCapturedEvent;
@@ -16,6 +16,8 @@ namespace FaceDetection.Implementation
         private int _snapshotIntervalSeconds = 9;
 
         private static Timer _timer;
+
+        private static object _lockObject = new object();
 
         public PiCamera(int snapshotIntervalSeconds)
         {
@@ -31,27 +33,33 @@ namespace FaceDetection.Implementation
             }
         }
 
-        public void StartCapturingImages()
+        public byte[] StartCapturingImages()
         {
-            if (_timer != null)
-            {
-                return;
-            }
+            return TakeSnapshot(null);
 
-            _timer = new Timer(
-                   callback: new TimerCallback(TakeSnapshot),
-                   state: null,
-                   dueTime: 1000,
-                   period: _snapshotIntervalSeconds * 1000);
+            //if (_timer != null)
+            //{
+            //    return;
+            //}
+
+            //_timer = new Timer(
+            //       callback: new TimerCallback(TakeSnapshot),
+            //       state: null,
+            //       dueTime: 1000,
+            //       period: _snapshotIntervalSeconds * 1000);
             
         }
 
-        private void TakeSnapshot(object state)
+        private byte[] TakeSnapshot(object state)
         {
-            var pictureBytes = Pi.Camera.CaptureImageJpeg(640, 480);
+            byte[] pictureBytes;
+            lock (_lockObject)
+            {
+                pictureBytes = Pi.Camera.CaptureImageJpeg(640, 480);
+            }
 
-            var pictureBytesClone = pictureBytes.ToArray();
-            imageCapturedEvent?.Invoke(pictureBytesClone);
+            //var pictureBytesClone = pictureBytes.ToArray();
+            //imageCapturedEvent?.Invoke(pictureBytesClone);
 
             var captureName = $"image_{ _imageCounter}";
             var targetPath = $"/home/pi/camera-captures/{captureName}.jpg";
@@ -65,6 +73,8 @@ namespace FaceDetection.Implementation
 
             File.WriteAllBytes(targetPath, pictureBytes);
             Console.WriteLine($"Took picture -- Byte count: {pictureBytes.Length}. File name: {captureName}");
+
+            return pictureBytes;
         }
 
         public void CaptureStream()

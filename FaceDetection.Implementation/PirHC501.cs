@@ -35,32 +35,30 @@ namespace FaceDetection.Implementation
 
         private void ISRCallback()
         {
-            if (_isMotion )
+            if (!_isMotion && timer == null)
             {
-                if (timer == null)
-                {
-                    timer = new Timer(
-                    callback: new TimerCallback(TimerTask),
-                    state: this,
-                    dueTime: 5000,
-                    period: Timeout.Infinite);
-                }
-                else
-                {
-                    Reset();
-                }
-            }
-            else
-            {
-                // if there is no motion change state
+                timer = new Timer(
+                callback: new TimerCallback(TimerTask),
+                state: new TimerState {  Count = 0 },
+                dueTime: 30000, // 30s
+                period: 1000);
+
                 ChangeState();
             }
         }
 
-        private static void TimerTask(object timerState)
+        private void TimerTask(object timerState)
         {
-            ((PirHC501)timerState).ChangeState();
-            ((PirHC501)timerState).Reset();
+            var state = timerState as TimerState;
+            state.Count++;
+            Console.WriteLine("Timer callback");
+
+            motionStartedEvent?.Invoke();
+
+            if (state.Count == 10)
+            {
+                this.Reset();
+            }
         }
 
         public void ChangeState()
@@ -81,8 +79,23 @@ namespace FaceDetection.Implementation
 
         private void Reset()
         {
+            Console.WriteLine($"Reset timer {_isMotion}");
+
+            if (_isMotion)
+            {
+                ChangeState();
+            }
+
+            Console.WriteLine($"Dispose timer");
+
+
             timer.Dispose();
             timer = null;
         }
+    }
+
+    public class TimerState
+    {
+        public int Count { get; set; }
     }
 }
