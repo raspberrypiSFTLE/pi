@@ -9,3 +9,7 @@
 /RaspberryPi.Sensors/bin/Debug
 /RaspberryPi.Sensors/obj
 /.vs
+/FaceDetection/bin/
+/FaceDetection/obj/
+/FaceDetection.Implementation/bin/
+/FaceDetection.Implementation/obj/

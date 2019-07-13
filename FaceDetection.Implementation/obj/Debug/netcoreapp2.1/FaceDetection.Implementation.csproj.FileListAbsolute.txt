@@ -7,3 +7,12 @@ C:\Hackaton\pi\FaceDetection.Implementation\obj\Debug\netcoreapp2.1\FaceDetectio
 C:\Hackaton\pi\FaceDetection.Implementation\obj\Debug\netcoreapp2.1\FaceDetection.Implementation.dll
 C:\Hackaton\pi\FaceDetection.Implementation\obj\Debug\netcoreapp2.1\FaceDetection.Implementation.pdb
 C:\Hackaton\pi\FaceDetection.Implementation\obj\Debug\netcoreapp2.1\FaceDetection.Implementation.csprojAssemblyReference.cache
+c:\@Dev\Hackaton\Project\Pi\pi\FaceDetection.Implementation\bin\Debug\netcoreapp2.1\FaceDetection.Implementation.deps.json
+c:\@Dev\Hackaton\Project\Pi\pi\FaceDetection.Implementation\bin\Debug\netcoreapp2.1\FaceDetection.Implementation.dll
+c:\@Dev\Hackaton\Project\Pi\pi\FaceDetection.Implementation\bin\Debug\netcoreapp2.1\FaceDetection.Implementation.pdb
+c:\@Dev\Hackaton\Project\Pi\pi\FaceDetection.Implementation\obj\Debug\netcoreapp2.1\FaceDetection.Implementation.csprojAssemblyReference.cache
+c:\@Dev\Hackaton\Project\Pi\pi\FaceDetection.Implementation\obj\Debug\netcoreapp2.1\FaceDetection.Implementation.csproj.CoreCompileInputs.cache
+c:\@Dev\Hackaton\Project\Pi\pi\FaceDetection.Implementation\obj\Debug\netcoreapp2.1\FaceDetection.Implementation.AssemblyInfoInputs.cache
+c:\@Dev\Hackaton\Project\Pi\pi\FaceDetection.Implementation\obj\Debug\netcoreapp2.1\FaceDetection.Implementation.AssemblyInfo.cs
+c:\@Dev\Hackaton\Project\Pi\pi\FaceDetection.Implementation\obj\Debug\netcoreapp2.1\FaceDetection.Implementation.dll
+c:\@Dev\Hackaton\Project\Pi\pi\FaceDetection.Implementation\obj\Debug\netcoreapp2.1\FaceDetection.Implementation.pdb
