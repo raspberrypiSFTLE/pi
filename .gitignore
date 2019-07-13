@@ -2,12 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/RaspberryPi.Sensors.Sample/bin/Debug
-/RaspberryPi.Sensors.Sample/obj
-/RaspberryPi.Sensors.Abstractions/bin/Debug
-/RaspberryPi.Sensors.Abstractions/obj
-/RaspberryPi.Sensors/bin/Debug
-/RaspberryPi.Sensors/obj
 /.vs
 /FaceDetection/bin/
 /FaceDetection/obj/
