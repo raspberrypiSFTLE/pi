@@ -38,14 +38,14 @@ namespace RaspberryPi.Sensors
 
         private void MotionSensor_motionStoppedEvent()
         {
-            _leds.Update(ProcessState.MotionDetected);
-            _piCamera.StartCapturingImages();
+            _leds.Update(ProcessState.Sleep);
+            _piCamera.StopCapturingImages();
         }
 
         private void MotionSensor_motionStartedEvent()
         {
-            _leds.Update(ProcessState.Sleep);
-            _piCamera.StopCapturingImages();
+            _leds.Update(ProcessState.MotionDetected);
+            _piCamera.StartCapturingImages();
         }
     }
 }

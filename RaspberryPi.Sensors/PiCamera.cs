@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading;
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Camera;
@@ -65,8 +63,6 @@ namespace RaspberryPi.Sensors
             File.WriteAllBytes(targetPath, pictureBytes);
             Console.WriteLine($"Took picture -- Byte count: {pictureBytes.Length}. File name: {captureName}");
         }
-
-
 
 
         public void CaptureStream()
