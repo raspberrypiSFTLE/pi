@@ -16,10 +16,13 @@ namespace FaceDetection.Implementation
         private IdentifyPerson _identifyPerson;
         private IMemoryCache _cache;
         private ReplyBag _replyBag;
+        private TTSBuilder _ttsBuilder;
+        private SoundPlayer _soundPlayer;
+        private ReplyBuilder _replyBuilder;
 
         private volatile bool processInProgress = false;
 
-        public ProcessManager(int snapshotsInterval, IMemoryCache cache, ReplyBag replyBag)
+        public ProcessManager(int snapshotsInterval, IMemoryCache cache, ReplyBag replyBag, TTSBuilder ttsBuilder, SoundPlayer soundPlayer, ReplyBuilder replyBuilder)
         {
             _leds = new LEDs();
             _piCamera = new PiCamera(snapshotsInterval);
@@ -27,6 +30,9 @@ namespace FaceDetection.Implementation
             _identifyPerson = new IdentifyPerson();
             _cache = cache;
             _replyBag = replyBag;
+            _ttsBuilder = ttsBuilder;
+            _soundPlayer = soundPlayer;
+            _replyBuilder = replyBuilder;
         }
 
         public void Start()
@@ -70,10 +76,6 @@ namespace FaceDetection.Implementation
         {
             string wavFileName = "sample";
 
-            TTSBuilder ttsBuilder = new TTSBuilder(_cache);
-            SoundPlayer soundPlayer = new SoundPlayer();
-            ReplyBuilder replyBuilder = new ReplyBuilder(_replyBag);
-
             processInProgress = true;
             _leds.Update(ProcessState.WaitingPersonDetection);
 
@@ -113,11 +115,11 @@ namespace FaceDetection.Implementation
 
                 if (personsToProcess.Count > 0)
                 {
-                    var replies = replyBuilder.BuildReplies(persons);
+                    var replies = _replyBuilder.BuildReplies(persons);
 
-                    await ttsBuilder.BuildWavAsync(replies, wavFileName);
+                    await _ttsBuilder.BuildWavAsync(replies, wavFileName);
 
-                    soundPlayer.PlayOnPi(wavFileName);
+                    _soundPlayer.PlayOnPi(wavFileName);
                 }
             }
 

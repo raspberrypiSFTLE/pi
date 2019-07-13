@@ -42,7 +42,10 @@ namespace FaceDetection
 
             _cache = new MemoryCache(new MemoryCacheOptions());
             replyBag = new ReplyBag();
-            var processManager = new ProcessManager(snapshotIntervalSeconds, _cache, replyBag);
+            TTSBuilder ttsBuilder = new TTSBuilder(_cache);
+            SoundPlayer soundPlayer = new SoundPlayer();
+            ReplyBuilder replyBuilder = new ReplyBuilder(replyBag);
+            var processManager = new ProcessManager(snapshotIntervalSeconds, _cache, replyBag, ttsBuilder, soundPlayer, replyBuilder);
             processManager.Start();
 
             Console.ReadKey();
