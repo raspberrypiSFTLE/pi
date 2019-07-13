@@ -13,6 +13,8 @@ namespace FaceDetection.Implementation
         private PiCamera _piCamera;
         private IdentifyPerson _identifyPerson;
 
+        private volatile bool processInProgress = false;
+
         public ProcessManager(int snapshotsInterval)
         {
             _leds = new LEDs();
@@ -42,19 +44,25 @@ namespace FaceDetection.Implementation
 
         private void MotionSensor_motionStoppedEvent()
         {
-            _leds.Update(ProcessState.Sleep);
+            if (!processInProgress)
+            {
+                _leds.Update(ProcessState.Sleep);
+            }
+
+            processInProgress = false;
             _piCamera.StopCapturingImages();
         }
 
         private void MotionSensor_motionStartedEvent()
         {
+            processInProgress = true;
             _leds.Update(ProcessState.WaitingPersonDetection);
             _piCamera.StartCapturingImages();
         }
 
-
         private async void _piCamera_imageCapturedEvent(byte[] imageContent)
         {
+            processInProgress = true;
             _leds.Update(ProcessState.WaitingPersonDetection);
 
             var persons = await _identifyPerson.IdentifyPersonAsync(imageContent).ConfigureAwait(false);
@@ -68,6 +76,8 @@ namespace FaceDetection.Implementation
             {
                 _leds.Update(ProcessState.AllPersonsRecognized);
             }
+
+            processInProgress = false;
         }
     }
 }

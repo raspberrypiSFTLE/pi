@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Camera;
@@ -40,7 +41,7 @@ namespace FaceDetection.Implementation
             _timer = new Timer(
                    callback: new TimerCallback(TakeSnapshot),
                    state: null,
-                   dueTime: 0,
+                   dueTime: 1000,
                    period: _snapshotIntervalSeconds * 1000);
             
         }
@@ -49,7 +50,8 @@ namespace FaceDetection.Implementation
         {
             var pictureBytes = Pi.Camera.CaptureImageJpeg(640, 480);
 
-            imageCapturedEvent?.Invoke(pictureBytes);
+            var pictureBytesClone = pictureBytes.ToArray();
+            imageCapturedEvent?.Invoke(pictureBytesClone);
 
             var captureName = $"image_{ _imageCounter}";
             var targetPath = $"/home/pi/camera-captures/{captureName}.jpg";
@@ -64,7 +66,6 @@ namespace FaceDetection.Implementation
             File.WriteAllBytes(targetPath, pictureBytes);
             Console.WriteLine($"Took picture -- Byte count: {pictureBytes.Length}. File name: {captureName}");
         }
-
 
         public void CaptureStream()
         {
