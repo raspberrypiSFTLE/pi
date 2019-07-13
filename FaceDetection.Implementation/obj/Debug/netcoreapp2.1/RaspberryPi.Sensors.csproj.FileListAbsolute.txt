@@ -1,8 +1,0 @@
-C:\Hackaton\pi\RaspberryPi.Sensors\obj\Debug\netcoreapp2.1\RaspberryPi.Sensors.csproj.CoreCompileInputs.cache
-C:\Hackaton\pi\RaspberryPi.Sensors\obj\Debug\netcoreapp2.1\RaspberryPi.Sensors.AssemblyInfoInputs.cache
-C:\Hackaton\pi\RaspberryPi.Sensors\obj\Debug\netcoreapp2.1\RaspberryPi.Sensors.AssemblyInfo.cs
-C:\Hackaton\pi\RaspberryPi.Sensors\bin\Debug\netcoreapp2.1\FaceDetection.Implementation.deps.json
-C:\Hackaton\pi\RaspberryPi.Sensors\bin\Debug\netcoreapp2.1\FaceDetection.Implementation.dll
-C:\Hackaton\pi\RaspberryPi.Sensors\bin\Debug\netcoreapp2.1\FaceDetection.Implementation.pdb
-C:\Hackaton\pi\RaspberryPi.Sensors\obj\Debug\netcoreapp2.1\FaceDetection.Implementation.dll
-C:\Hackaton\pi\RaspberryPi.Sensors\obj\Debug\netcoreapp2.1\FaceDetection.Implementation.pdb
