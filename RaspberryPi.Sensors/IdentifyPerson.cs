@@ -12,8 +12,10 @@ namespace RaspberryPi.Sensors
     public class IdentifyPerson
     {
 
-        public async Task<string> IdentifyPersonAsync(byte[] imageContent)
+        public async Task<List<Person>> IdentifyPersonAsync(byte[] imageContent)
         {
+            var persons = new List<Person>();
+
             using (var client = new HttpClient())
             using (var formData = new MultipartFormDataContent())
             using (var imageStream = new MemoryStream(imageContent))
@@ -22,36 +24,16 @@ namespace RaspberryPi.Sensors
                 {
                     formData.Add(fileStreamContent, "file", "file");
                     var response = await client.PostAsync("https://faceappfront.azurewebsites.net/facerecognition/known-persons", formData).ConfigureAwait(false);
-                    if (!response.IsSuccessStatusCode)
+                    if (response.IsSuccessStatusCode)
                     {
-                        return string.Empty;
-                    }
-
-                    var result = await response.Content.ReadAsStringAsync();
-                    var responseJson = JsonConvert.DeserializeObject<List<object>>(result);
-
-                    foreach (var item in responseJson)
-                    {
-                        if (item is JObject)
-                        {
-                            foreach (var property in (item as JObject))
-                            {
-                                if (property.Key == "match")
-                                {
-                                    var personName = property.Value.Value<string>();
-                                    if (!string.IsNullOrWhiteSpace(personName))
-                                    {
-                                        Console.WriteLine($"Person identified: {personName}");
-                                        return personName;
-                                    }
-                                }
-                            }
-                        }
+                        var result = await response.Content.ReadAsStringAsync();
+                        persons = JsonConvert.DeserializeObject<List<Person>>(result);
+                        return persons;
                     }
                 }
             }
 
-            return string.Empty;
+            return persons;
         }
     }
 }

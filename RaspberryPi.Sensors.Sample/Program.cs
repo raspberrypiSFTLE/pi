@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Unosquare.RaspberryIO;
+using Unosquare.Swan;
 using Unosquare.WiringPi;
 
 namespace RaspberryPi.Sensors.Sample
@@ -9,15 +11,15 @@ namespace RaspberryPi.Sensors.Sample
     {
         static void Main(string[] args)
         {
-            //byte[] imageContent = File.ReadAllBytes("C:\\Users\\olv\\Downloads\\image_1.jpg");
-            //var personName = new IdentifyPerson().IdentifyPersonAsync(imageContent).GetAwaiter().GetResult();
-            //Console.WriteLine($"person: {personName}");
+            //byte[] imageContent = File.ReadAllBytes("C:\\Users\\olv\\Downloads\\vedete.jpg");
+            //var personNames = new IdentifyPerson().IdentifyPersonAsync(imageContent).GetAwaiter().GetResult();
+            //Console.WriteLine($"Persons in capture:\n Person: {String.Join(";\n Person: ", personNames.Select(p => p.ToString()).ToArray())}");
 
             //Console.ReadKey();
             //return;
 
             Pi.Init<BootstrapWiringPi>();
-            int snapshotIntervalSeconds = 5;
+            int snapshotIntervalSeconds = 9;
             foreach (var argument in args)
             {
                 var keyValueArgument = argument.Split(':');

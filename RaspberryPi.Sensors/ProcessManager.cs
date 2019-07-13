@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Unosquare.RaspberryIO;
 using Unosquare.WiringPi;
@@ -56,16 +57,15 @@ namespace RaspberryPi.Sensors
         {
             _leds.Update(ProcessState.WaitingPersonDetection);
 
-            var personName = await _identifyPerson.IdentifyPersonAsync(imageContent).ConfigureAwait(false);
+            var persons = await _identifyPerson.IdentifyPersonAsync(imageContent).ConfigureAwait(false);
+            Console.WriteLine($"Persons in capture:\n Person: {String.Join(";\n Person: ", persons.Select(p => p.ToString()).ToArray())}");
 
-            if (string.IsNullOrWhiteSpace(personName))
+            if (persons.Any(p => p.Unrecognized) || !persons.Any())
             {
-                Console.WriteLine("Person unidentified");
                 _leds.Update(ProcessState.PersonUnrecognized);
             }
             else
             {
-                Console.WriteLine($"Person identified as '{personName}'");
                 _leds.Update(ProcessState.PersonRecognized);
             }
         }
