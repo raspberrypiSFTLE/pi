@@ -121,6 +121,13 @@ namespace FaceDetection.Implementation
 
                     _soundPlayer.PlayOnPi(wavFileName);
                 }
+                //else
+                //{
+                //    string jokeFileName = "joke";
+                //    var jokeReply = _replyBuilder.GetJoke();
+                //    await _ttsBuilder.BuildWavAsync(jokeReply, jokeFileName);
+                //    _soundPlayer.PlayOnPi(jokeFileName);
+                //}
             }
 
             processInProgress = false;

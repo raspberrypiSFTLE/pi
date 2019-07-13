@@ -21,6 +21,14 @@ namespace FaceDetection.Implementation
             _replyBag = replyBag;
             random = new Random();
         }
+        public Reply GetJoke()
+        {
+            return new Reply
+            {
+                Text = _replyBag.Puns[random.Next(0, _replyBag.Puns.Count - 1)],
+                Language = "en-US"
+            };
+        }
         public List<Reply> BuildReplies(List<Person> persons)
         {
             var replies = new List<Reply>();
