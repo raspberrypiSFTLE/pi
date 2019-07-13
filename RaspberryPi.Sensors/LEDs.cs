@@ -78,9 +78,9 @@ namespace RaspberryPi.Sensors
         {
             var blinkState = (state as BlinkState);
             blinkState.BlinkValue = !blinkState.BlinkValue;
-            _greenPin.Write(blinkState.BlinkValue);
-            _redPin.Write(blinkState.BlinkValue);
-            _bluePin.Write(false);
+            _greenPin.Write(false);
+            _redPin.Write(false);
+            _bluePin.Write(blinkState.BlinkValue);
         }
     }
 

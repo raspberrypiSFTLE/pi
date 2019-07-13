@@ -8,6 +8,9 @@ namespace RaspberryPi.Sensors
 {
     public class PiCamera : IPiCamera
     {
+        public delegate void ImageCaptured(byte[] imageContent);
+        public event ImageCaptured imageCapturedEvent;
+
         private int _imageCounter = 1;
         private int _snapshotInterval = 3; //in seconds
 
@@ -49,6 +52,9 @@ namespace RaspberryPi.Sensors
         private void TakeSnapshot(object state)
         {
             var pictureBytes = Pi.Camera.CaptureImageJpeg(640, 480);
+
+            imageCapturedEvent?.Invoke(pictureBytes);
+
             var captureName = $"image_{ _imageCounter}";
             var targetPath = $"/home/pi/camera-captures/{captureName}.jpg";
 

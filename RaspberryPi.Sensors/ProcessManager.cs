@@ -9,12 +9,15 @@ namespace RaspberryPi.Sensors
     public class ProcessManager
     {
         private ILEDs _leds;
-        private IPiCamera _piCamera;
+        private PiCamera _piCamera;
+        private IdentifyPerson _identifyPerson;
 
         public ProcessManager(int snapshotsInterval)
         {
             _leds = new LEDs();
             _piCamera = new PiCamera(snapshotsInterval);
+            _piCamera.imageCapturedEvent += _piCamera_imageCapturedEvent;
+            _identifyPerson = new IdentifyPerson();
         }
 
         public void Start()
@@ -44,8 +47,27 @@ namespace RaspberryPi.Sensors
 
         private void MotionSensor_motionStartedEvent()
         {
-            _leds.Update(ProcessState.MotionDetected);
+            _leds.Update(ProcessState.WaitingPersonDetection);
             _piCamera.StartCapturingImages();
+        }
+
+
+        private async void _piCamera_imageCapturedEvent(byte[] imageContent)
+        {
+            _leds.Update(ProcessState.WaitingPersonDetection);
+
+            var personName = await _identifyPerson.IdentifyPersonAsync(imageContent).ConfigureAwait(false);
+
+            if (string.IsNullOrWhiteSpace(personName))
+            {
+                Console.WriteLine("Person unidentified");
+                _leds.Update(ProcessState.PersonUnrecognized);
+            }
+            else
+            {
+                Console.WriteLine($"Person identified as '{personName}'");
+                _leds.Update(ProcessState.PersonRecognized);
+            }
         }
     }
 }
