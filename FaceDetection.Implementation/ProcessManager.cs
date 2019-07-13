@@ -5,6 +5,7 @@ using System.Text;
 using Unosquare.RaspberryIO;
 using Unosquare.WiringPi;
 using FaceDetection.Implementation.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace FaceDetection.Implementation
 {
@@ -13,15 +14,19 @@ namespace FaceDetection.Implementation
         private ILEDs _leds;
         private PiCamera _piCamera;
         private IdentifyPerson _identifyPerson;
+        private IMemoryCache _cache;
+        private ReplyBag _replyBag;
 
         private volatile bool processInProgress = false;
 
-        public ProcessManager(int snapshotsInterval)
+        public ProcessManager(int snapshotsInterval, IMemoryCache cache, ReplyBag replyBag)
         {
             _leds = new LEDs();
             _piCamera = new PiCamera(snapshotsInterval);
             _piCamera.imageCapturedEvent += _piCamera_imageCapturedEvent;
             _identifyPerson = new IdentifyPerson();
+            _cache = cache;
+            _replyBag = replyBag;
         }
 
         public void Start()
@@ -63,6 +68,12 @@ namespace FaceDetection.Implementation
 
         private async void _piCamera_imageCapturedEvent(byte[] imageContent)
         {
+            string wavFileName = "sample";
+
+            TTSBuilder ttsBuilder = new TTSBuilder(_cache);
+            SoundPlayer soundPlayer = new SoundPlayer();
+            ReplyBuilder replyBuilder = new ReplyBuilder(_replyBag);
+
             processInProgress = true;
             _leds.Update(ProcessState.WaitingPersonDetection);
 
@@ -76,6 +87,12 @@ namespace FaceDetection.Implementation
             else
             {
                 _leds.Update(ProcessState.AllPersonsRecognized);
+
+                var replies = replyBuilder.BuildReplies(persons[0]);
+
+                await ttsBuilder.BuildWavAsync(replies, wavFileName);
+
+                soundPlayer.PlayOnPi(wavFileName);
             }
 
             processInProgress = false;
