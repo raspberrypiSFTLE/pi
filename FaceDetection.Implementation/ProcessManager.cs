@@ -5,6 +5,7 @@ using System.Text;
 using Unosquare.RaspberryIO;
 using Unosquare.WiringPi;
 using FaceDetection.Implementation.Models;
+using Microsoft.Extensions.Caching.Memory;
 using System.Threading;
 
 namespace FaceDetection.Implementation
@@ -14,17 +15,27 @@ namespace FaceDetection.Implementation
         private ILEDs _leds;
         private PiCamera _piCamera;
         private IdentifyPerson _identifyPerson;
+        private IMemoryCache _cache;
+        private ReplyBag _replyBag;
+        private TTSBuilder _ttsBuilder;
+        private SoundPlayer _soundPlayer;
+        private ReplyBuilder _replyBuilder;
 
         private static object _lockObject = new object();
 
         private AutoResetEvent autoresetEvent = new AutoResetEvent(true);
 
-        public ProcessManager(int snapshotsInterval)
+        public ProcessManager(int snapshotsInterval, IMemoryCache cache, ReplyBag replyBag, TTSBuilder ttsBuilder, SoundPlayer soundPlayer, ReplyBuilder replyBuilder)
         {
             _leds = new LEDs();
             _piCamera = new PiCamera(snapshotsInterval);
             //_piCamera.imageCapturedEvent += _piCamera_imageCapturedEvent;
             _identifyPerson = new IdentifyPerson();
+            _cache = cache;
+            _replyBag = replyBag;
+            _ttsBuilder = ttsBuilder;
+            _soundPlayer = soundPlayer;
+            _replyBuilder = replyBuilder;
         }
 
         public void Start()
@@ -42,7 +53,7 @@ namespace FaceDetection.Implementation
                 motionSensor.motionStoppedEvent += MotionSensor_motionStoppedEvent;
                 motionSensor.Start();
 
-                
+
             }
             catch (Exception e)
             {
@@ -69,6 +80,8 @@ namespace FaceDetection.Implementation
 
         private async void StartFlow()
         {
+            string wavFileName = "sample";
+
             while (true)
             {
                 Console.WriteLine("Wait one");
@@ -77,17 +90,15 @@ namespace FaceDetection.Implementation
                 Console.WriteLine("Continue process");
 
                 byte[] imageContent;
-                lock (_lockObject)
+                _leds.Update(ProcessState.WaitingPersonDetection);
+
+                imageContent = _piCamera.StartCapturingImages();
+
+                if (!Faces.IsDetectedFace(imageContent))
                 {
-                    _leds.Update(ProcessState.WaitingPersonDetection);
-
-                    imageContent = _piCamera.StartCapturingImages();
-
-                    if (!Faces.IsDetectedFace(imageContent))
-                    {
-                        _leds.Update(ProcessState.Sleep);
-                        Console.WriteLine($"No faces detected in image");
-                    }
+                    _leds.Update(ProcessState.Sleep);
+                    Console.WriteLine($"No faces detected in image");
+                    continue;
                 }
 
                 var persons = await _identifyPerson.IdentifyPersonAsync(imageContent).ConfigureAwait(false);
@@ -99,7 +110,31 @@ namespace FaceDetection.Implementation
                 }
                 else
                 {
+                    List<Person> personsToProcess = new List<Person>();
+                    foreach (var person in persons)
+                    {
+                        bool seen;
+                        bool alreadySeen = _cache.TryGetValue(person.match.personId, out seen);
+                        if (!alreadySeen)
+                        {
+                            _cache.Set(person.match.personId, true, new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(1)));
+                            personsToProcess.Add(person);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"I have seen {person.match.name} in the past minutes");
+                        }
+                    }
                     _leds.Update(ProcessState.AllPersonsRecognized);
+
+                    if (personsToProcess.Count > 0)
+                    {
+                        var replies = _replyBuilder.BuildReplies(persons);
+
+                        await _ttsBuilder.BuildWavAsync(replies, wavFileName);
+
+                        _soundPlayer.PlayOnPi(wavFileName);
+                    }
                 }
             }
         }

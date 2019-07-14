@@ -40,7 +40,7 @@ namespace FaceDetection.Implementation
                 timer = new Timer(
                 callback: new TimerCallback(TimerTask),
                 state: new TimerState {  Count = 0 },
-                dueTime: 30000, // 30s
+                dueTime: 0, 
                 period: 1000);
 
                 ChangeState();

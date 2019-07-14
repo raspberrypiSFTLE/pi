@@ -47,6 +47,10 @@ namespace FaceDetection.Implementation
                 var items = line.Split('#');
                 PersonalReplies.Add(items[0], items[1]);
             }
+            Console.WriteLine("replies loaded");
+            Console.WriteLine("AgeOlderReplies " + AgeOlderReplies.Count);
+            Console.WriteLine("EmotionRepliesContempt " + EmotionReplies.Contempt.Count);
+            Console.WriteLine("PersonalReplies " + PersonalReplies.Count);
         }
     }
 }

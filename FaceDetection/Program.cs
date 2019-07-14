@@ -1,4 +1,5 @@
 ﻿using FaceDetection.Implementation;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,9 @@ namespace FaceDetection
 {
     class Program
     {
+        private static IMemoryCache _cache;
+        private static ReplyBag replyBag;
+
         static void Main(string[] args)
         {
             //byte[] imageContent = File.ReadAllBytes("C:\\Users\\olv\\Downloads\\vedete.jpg");
@@ -36,7 +40,12 @@ namespace FaceDetection
                 }
             }
 
-            var processManager = new ProcessManager(snapshotIntervalSeconds);
+            _cache = new MemoryCache(new MemoryCacheOptions());
+            replyBag = new ReplyBag();
+            TTSBuilder ttsBuilder = new TTSBuilder(_cache);
+            SoundPlayer soundPlayer = new SoundPlayer();
+            ReplyBuilder replyBuilder = new ReplyBuilder(replyBag);
+            var processManager = new ProcessManager(snapshotIntervalSeconds, _cache, replyBag, ttsBuilder, soundPlayer, replyBuilder);
             processManager.Start();
 
             Console.ReadKey();
