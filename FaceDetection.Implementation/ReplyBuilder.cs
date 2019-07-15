@@ -47,19 +47,21 @@ namespace FaceDetection.Implementation
             {
                 textEN = _replyBag.Greetings[random.Next(0, _replyBag.Greetings.Count - 1)];
 
+                var recognizedPersons = persons.Where(p => !p.Unrecognized).ToList();
+
                 if (recognizedPersonCount > 1)
                 {
 
                     textEN += "... " + _replyBag.Identify[random.Next(0, _replyBag.Identify.Count - 1)];
-                    for (int i = 0; i < persons.Count; i++)
+                    for (int i = 0; i < recognizedPersons.Count; i++)
                     {
-                        if (i == persons.Count - 1)
+                        if (i == recognizedPersons.Count - 1)
                         {
-                            textEN += "and " + persons[i].match.name;
+                            textEN += "and " + recognizedPersons[i].match.name.Split(" ").First();
                         }
                         else
                         {
-                            textEN += ", " + persons[i].match.name;
+                            textEN += ", " + recognizedPersons[i].match.name.Split(" ").First();
                         }
                     }
 
@@ -92,7 +94,7 @@ namespace FaceDetection.Implementation
             }
             else if (recognizedPersonCount == 1)
             {
-                var faceInformation = persons[0];
+                var faceInformation = persons.Where(p=>!p.Unrecognized).First();
 
                 //custom reply for the special ones
                 if (_replyBag.PersonalReplies.ContainsKey(faceInformation.match.personId))
@@ -108,7 +110,7 @@ namespace FaceDetection.Implementation
                 {
                     textEN = _replyBag.Greetings[random.Next(0, _replyBag.Greetings.Count - 1)];
 
-                    textEN += "... " + _replyBag.Identify[random.Next(0, _replyBag.Identify.Count - 1)] + " " + faceInformation.match.name;
+                    textEN += "... " + _replyBag.Identify[random.Next(0, _replyBag.Identify.Count - 1)] + " " + faceInformation.match.name.Split(" ").First();
 
                     if (faceInformation.faceAttributes.age > faceInformation.match.age)
                     {

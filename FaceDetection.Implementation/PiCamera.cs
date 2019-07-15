@@ -25,18 +25,18 @@ namespace FaceDetection.Implementation
                 pictureBytes = Pi.Camera.CaptureImageJpeg(640, 480);
             }
 
-            var captureName = $"image_{ _imageCounter}";
-            var targetPath = $"/home/pi/camera-captures/{captureName}.jpg";
+            //var captureName = $"image_{ _imageCounter}";
+            //var targetPath = $"/home/pi/camera-captures/{captureName}.jpg";
 
-            _imageCounter++;
-            if (_imageCounter >= 99)
-            {
-                //reset counter
-                _imageCounter = 1;
-            }
+            //_imageCounter++;
+            //if (_imageCounter >= 99)
+            //{
+            //    //reset counter
+            //    _imageCounter = 1;
+            //}
 
-            File.WriteAllBytes(targetPath, pictureBytes);
-            Console.WriteLine($"Took picture -- Byte count: {pictureBytes.Length}. File name: {captureName}");
+            ////File.WriteAllBytes(targetPath, pictureBytes);
+            //Console.WriteLine($"Took picture -- Byte count: {pictureBytes.Length}. File name: {captureName}");
 
             return pictureBytes;
         }

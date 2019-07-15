@@ -19,7 +19,7 @@ namespace FaceDetection.Implementation
             Mat grey = new Mat();
             Cv2.CvtColor(img, grey, ColorConversionCodes.BGR2GRAY);
 
-            Rect[] faces = cascade.DetectMultiScale(grey, 1.3, 2, HaarDetectionType.ScaleImage, new Size(100, 100));
+            Rect[] faces = cascade.DetectMultiScale(grey, 1.1, 3, HaarDetectionType.ScaleImage);
             return faces;
         }
 

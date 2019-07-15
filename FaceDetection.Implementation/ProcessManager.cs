@@ -89,7 +89,7 @@ namespace FaceDetection.Implementation
 
                     imageContent = _piCamera.TakeSnapshot();
 
-                    if (!Faces.IsDetectedFace(imageContent))
+                    if (!Faces.IsDetectedFace(imageContent, 1))
                     {
 
                         WriteToConsole($"No faces detected in image");
@@ -118,13 +118,13 @@ namespace FaceDetection.Implementation
                         }
 
                         List<Person> personsToProcess = new List<Person>(persons);
-                        foreach (var person in persons)
+                        foreach (var person in persons.Where(p => !p.Unrecognized))
                         {
                             bool seen;
-                            bool alreadySeen = _cache.TryGetValue(person.match.personId, out seen);
+                            bool alreadySeen = _cache.TryGetValue(person.match?.personId, out seen);
                             if (!alreadySeen)
                             {
-                                _cache.Set(person.match.personId, true, new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(1)));
+                                _cache.Set(person.match.personId, true, new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromSeconds(30)));
                                 //personsToProcess.Add(person);
                             }
                             else
