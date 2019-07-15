@@ -117,7 +117,7 @@ namespace FaceDetection.Implementation
                             _leds.Update(ProcessState.AllPersonsRecognized);
                         }
 
-                        List<Person> personsToProcess = new List<Person>();
+                        List<Person> personsToProcess = new List<Person>(persons);
                         foreach (var person in persons)
                         {
                             bool seen;
@@ -125,10 +125,11 @@ namespace FaceDetection.Implementation
                             if (!alreadySeen)
                             {
                                 _cache.Set(person.match.personId, true, new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(1)));
-                                personsToProcess.Add(person);
+                                //personsToProcess.Add(person);
                             }
                             else
                             {
+                                personsToProcess.Remove(person);
                                 Thread.Sleep(1000);
                                 WriteToConsole($"I have seen {person.match.name} in the past minutes");
                             }
@@ -137,7 +138,7 @@ namespace FaceDetection.Implementation
 
                         if (personsToProcess.Count > 0)
                         {
-                            var replies = _replyBuilder.BuildReplies(persons);
+                            var replies = _replyBuilder.BuildReplies(personsToProcess);
 
                             _ttsBuilder.BuildWavAsync(replies, wavFileName).GetAwaiter().GetResult();
 

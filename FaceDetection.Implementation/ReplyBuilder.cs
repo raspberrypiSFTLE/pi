@@ -24,34 +24,73 @@ namespace FaceDetection.Implementation
         public List<Reply> BuildReplies(List<Person> persons)
         {
             var replies = new List<Reply>();
-            string textEN;
+            string textEN = "";
             int randomValue;
 
-            if (persons.Count > 1)
+            var recognizedPersonCount = persons.Count(p => !p.Unrecognized);
+            var unrecognizedPersonCount = persons.Count(p => p.Unrecognized);
+
+            if (persons.All(p => p.Unrecognized) || !persons.Any())
             {
                 textEN = _replyBag.Greetings[random.Next(0, _replyBag.Greetings.Count - 1)];
-                textEN += "... " + _replyBag.Identify[random.Next(0, _replyBag.Identify.Count - 1)];
-                for (int i = 0; i < persons.Count; i++)
-                {
-                    if (i == persons.Count -1)
-                    {
-                        textEN += "and " + persons[i].match.name;
-                    }
-                    else
-                    {
-                        textEN += ", " + persons[i].match.name;
-                    }
-                }
+
                 replies.Add(new Reply
                 {
-                    Text = textEN,
+                    Text = textEN + ". I don't know who you are",
                     Language = "en-US"
                 });
 
                 return replies;
+            }
+
+            if (recognizedPersonCount > 1)
+            {
+                textEN = _replyBag.Greetings[random.Next(0, _replyBag.Greetings.Count - 1)];
+
+                if (recognizedPersonCount > 1)
+                {
+
+                    textEN += "... " + _replyBag.Identify[random.Next(0, _replyBag.Identify.Count - 1)];
+                    for (int i = 0; i < persons.Count; i++)
+                    {
+                        if (i == persons.Count - 1)
+                        {
+                            textEN += "and " + persons[i].match.name;
+                        }
+                        else
+                        {
+                            textEN += ", " + persons[i].match.name;
+                        }
+                    }
+
+                    if (unrecognizedPersonCount > 1)
+                    {
+                        replies.Add(new Reply
+                        {
+                            Text = textEN + ". The rest of you guys I don't know",
+                            Language = "en-US"
+                        });
+                    }
+                    else if(unrecognizedPersonCount == 1)
+                    {
+                        replies.Add(new Reply
+                        {
+                            Text = textEN + ". I don't know the other person. Are you sure you're in the right place?",
+                            Language = "en-US"
+                        });
+                    }
+
+                    replies.Add(new Reply
+                    {
+                        Text = textEN,
+                        Language = "en-US"
+                    });
+
+                    return replies;
+                }
 
             }
-            else if (persons.Count == 1)
+            else if (recognizedPersonCount == 1)
             {
                 var faceInformation = persons[0];
 
@@ -64,7 +103,6 @@ namespace FaceDetection.Implementation
                         Language = "ro-RO"
                     });
 
-                    return replies;
                 }
                 else
                 {
@@ -167,6 +205,25 @@ namespace FaceDetection.Implementation
                         Language = "en-US"
                     });
                 }
+
+                if (unrecognizedPersonCount > 1)
+                {
+                    replies.Add(new Reply
+                    {
+                        Text = textEN + ". The rest of you guys I don't know",
+                        Language = "en-US"
+                    });
+                }
+                else if (unrecognizedPersonCount == 1)
+                {
+                    replies.Add(new Reply
+                    {
+                        Text = textEN + ". I don't know the other person. Are you sure you're in the right place?",
+                        Language = "en-US"
+                    });
+                }
+
+                return replies;
             }
 
             return replies;
