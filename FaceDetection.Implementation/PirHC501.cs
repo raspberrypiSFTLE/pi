@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading;
+//using System.Threading;
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Abstractions;
 using Unosquare.WiringPi;
+using System.Timers;
 
 namespace FaceDetection.Implementation
 {
@@ -14,17 +15,21 @@ namespace FaceDetection.Implementation
         private GpioPin _pin;
 
         private static Timer timer;
+        private static int firedEventsCount = 0;
 
         public delegate void MotionStarted();
-        public delegate void MotionStopped();
 
         public event MotionStarted motionStartedEvent;
-        public event MotionStopped motionStoppedEvent;
 
-        public PirHC501()
+        public PirHC501(int snapshotsIntervalSeconds)
         {
             _pin = (GpioPin)Pi.Gpio[BcmPin.Gpio18];
             _pin.PinMode = GpioPinDriveMode.Input;
+
+            timer = new Timer(snapshotsIntervalSeconds * 1000);
+            timer.Elapsed += Timer_Elapsed;
+            timer.AutoReset = true;
+            timer.Enabled = false;
         }
 
         public void Start()
@@ -35,67 +40,33 @@ namespace FaceDetection.Implementation
 
         private void ISRCallback()
         {
-            if (!_isMotion && timer == null)
+            if (!_isMotion && !timer.Enabled )
             {
-                timer = new Timer(
-                callback: new TimerCallback(TimerTask),
-                state: new TimerState {  Count = 0 },
-                dueTime: 0, 
-                period: 1000);
-
-                ChangeState();
+                //start the timer
+                timer.Enabled = true;
+                _isMotion = true;
             }
         }
 
-        private void TimerTask(object timerState)
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            var state = timerState as TimerState;
-            state.Count++;
+            firedEventsCount++;
             Console.WriteLine("Timer callback");
 
             motionStartedEvent?.Invoke();
 
-            if (state.Count == 10)
+            if (firedEventsCount == 3)
             {
-                this.Reset();
+                this.ResetTimer();
             }
         }
 
-        public void ChangeState()
-        {
-            _isMotion = !_isMotion;
-
-            if (_isMotion)
-            {
-                Console.WriteLine($"Motion detected: {DateTime.Now:dd:MM:yyyy HH:mm:ss.fff}");
-                motionStartedEvent?.Invoke();
-            }
-            else
-            {
-                Console.WriteLine($"No motion detected: {DateTime.Now:dd:MM:yyyy HH:mm:ss.fff}");
-                motionStoppedEvent?.Invoke();
-            }
-        }
-
-        private void Reset()
+        private void ResetTimer()
         {
             Console.WriteLine($"Reset timer {_isMotion}");
-
-            if (_isMotion)
-            {
-                ChangeState();
-            }
-
-            Console.WriteLine($"Dispose timer");
-
-
-            timer.Dispose();
-            timer = null;
+            timer.Enabled = false;
+            _isMotion = false;
+            firedEventsCount = 0;
         }
-    }
-
-    public class TimerState
-    {
-        public int Count { get; set; }
     }
 }

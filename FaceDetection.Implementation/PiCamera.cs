@@ -9,57 +9,21 @@ namespace FaceDetection.Implementation
 {
     public class PiCamera
     {
-        public delegate void ImageCaptured(byte[] imageContent);
-        public event ImageCaptured imageCapturedEvent;
-
         private int _imageCounter = 1;
-        private int _snapshotIntervalSeconds = 9;
-
-        private static Timer _timer;
 
         private static object _lockObject = new object();
 
-        public PiCamera(int snapshotIntervalSeconds)
+        public PiCamera()
         {
-            _snapshotIntervalSeconds = Math.Max(_snapshotIntervalSeconds, snapshotIntervalSeconds);
         }
 
-        public void StopCapturingImages()
-        {
-            if (_timer != null)
-            {
-                _timer.Dispose();
-                _timer = null;
-            }
-        }
-
-        public byte[] StartCapturingImages()
-        {
-            return TakeSnapshot(null);
-
-            //if (_timer != null)
-            //{
-            //    return;
-            //}
-
-            //_timer = new Timer(
-            //       callback: new TimerCallback(TakeSnapshot),
-            //       state: null,
-            //       dueTime: 1000,
-            //       period: _snapshotIntervalSeconds * 1000);
-            
-        }
-
-        private byte[] TakeSnapshot(object state)
+        public byte[] TakeSnapshot()
         {
             byte[] pictureBytes;
             lock (_lockObject)
             {
                 pictureBytes = Pi.Camera.CaptureImageJpeg(640, 480);
             }
-
-            //var pictureBytesClone = pictureBytes.ToArray();
-            //imageCapturedEvent?.Invoke(pictureBytesClone);
 
             var captureName = $"image_{ _imageCounter}";
             var targetPath = $"/home/pi/camera-captures/{captureName}.jpg";

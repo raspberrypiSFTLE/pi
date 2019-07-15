@@ -39,3 +39,4 @@ msbuild.wrn
 /RaspberryPi.Sensors/bin/Debug
 /RaspberryPi.Sensors/obj
 /.vs
+*.rar

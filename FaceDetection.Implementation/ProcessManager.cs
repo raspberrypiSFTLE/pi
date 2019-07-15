@@ -22,20 +22,24 @@ namespace FaceDetection.Implementation
         private ReplyBuilder _replyBuilder;
 
         private static object _lockObject = new object();
+        private int _snapshotsInterval = 3;
 
-        private AutoResetEvent autoresetEvent = new AutoResetEvent(true);
+        private static AutoResetEvent autoresetEvent = new AutoResetEvent(false);
 
         public ProcessManager(int snapshotsInterval, IMemoryCache cache, ReplyBag replyBag, TTSBuilder ttsBuilder, SoundPlayer soundPlayer, ReplyBuilder replyBuilder)
         {
             _leds = new LEDs();
-            _piCamera = new PiCamera(snapshotsInterval);
-            //_piCamera.imageCapturedEvent += _piCamera_imageCapturedEvent;
+            _leds.Update(ProcessState.Sleep);
+            _piCamera = new PiCamera();
             _identifyPerson = new IdentifyPerson();
             _cache = cache;
             _replyBag = replyBag;
             _ttsBuilder = ttsBuilder;
             _soundPlayer = soundPlayer;
             _replyBuilder = replyBuilder;
+
+            if (snapshotsInterval == 0) snapshotsInterval = 5;
+            _snapshotsInterval = snapshotsInterval;
         }
 
         public void Start()
@@ -46,97 +50,116 @@ namespace FaceDetection.Implementation
 
             try
             {
-                StartFlow();
+                new Thread(() =>
+                {
+                    StartFlow();
+                }).Start();
 
-                var motionSensor = new PirHC501();
+                var motionSensor = new PirHC501(_snapshotsInterval);
                 motionSensor.motionStartedEvent += MotionSensor_motionStartedEvent;
-                motionSensor.motionStoppedEvent += MotionSensor_motionStoppedEvent;
                 motionSensor.Start();
-
-
             }
             catch (Exception e)
             {
-                Console.WriteLine("Failed. " + e.Message);
+                WriteToConsole("Failed. " + e.Message);
             }
-        }
-
-        private void MotionSensor_motionStoppedEvent()
-        {
-            //if (!processInProgress)
-            //{
-            //    _leds.Update(ProcessState.Sleep);
-            //}
-
-            //_piCamera.StopCapturingImages();
         }
 
         private void MotionSensor_motionStartedEvent()
         {
-            //_piCamera.StartCapturingImages();
-            Console.WriteLine("Release semaphore");
+            WriteToConsole("Release semaphore");
             autoresetEvent.Set();
         }
 
-        private async void StartFlow()
+        private void StartFlow()
         {
             string wavFileName = "sample";
 
             while (true)
             {
-                Console.WriteLine("Wait one");
-
-                autoresetEvent.WaitOne();
-                Console.WriteLine("Continue process");
-
-                byte[] imageContent;
-                _leds.Update(ProcessState.WaitingPersonDetection);
-
-                imageContent = _piCamera.StartCapturingImages();
-
-                if (!Faces.IsDetectedFace(imageContent))
+                try
                 {
+                    WriteToConsole("Wait one");
+
+                    autoresetEvent.WaitOne();
+                    WriteToConsole("---- Continue process----");
+
                     _leds.Update(ProcessState.Sleep);
-                    Console.WriteLine($"No faces detected in image");
-                    continue;
-                }
+                    byte[] imageContent;
 
-                var persons = await _identifyPerson.IdentifyPersonAsync(imageContent).ConfigureAwait(false);
-                Console.WriteLine($"Persons in capture:\n Person: {String.Join(";\n Person: ", persons.Select(p => p.ToString()).ToArray())}");
+                    imageContent = _piCamera.TakeSnapshot();
 
-                if (persons.Any(p => p.Unrecognized) || !persons.Any())
-                {
-                    _leds.Update(ProcessState.NoPersonRecognized);
-                }
-                else
-                {
-                    List<Person> personsToProcess = new List<Person>();
-                    foreach (var person in persons)
+                    if (!Faces.IsDetectedFace(imageContent))
                     {
-                        bool seen;
-                        bool alreadySeen = _cache.TryGetValue(person.match.personId, out seen);
-                        if (!alreadySeen)
+
+                        WriteToConsole($"No faces detected in image");
+                        WriteToConsole($" ---- End process -----");
+                        continue;
+                    }
+                    _leds.Update(ProcessState.WaitingPersonDetection);
+
+                    var persons = _identifyPerson.IdentifyPersonAsync(imageContent).GetAwaiter().GetResult();
+                    WriteToConsole($"Persons in capture:\n Person: {String.Join(";\n Person: ", persons.Select(p => p.ToString()).ToArray())}");
+
+                    if (persons.All(p => p.Unrecognized) || !persons.Any())
+                    {
+                        _leds.Update(ProcessState.NoPersonRecognized);
+                        Thread.Sleep(1000);
+                    }
+                    else
+                    {
+                        if (persons.Any(p => p.Unrecognized))
                         {
-                            _cache.Set(person.match.personId, true, new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(1)));
-                            personsToProcess.Add(person);
+                            _leds.Update(ProcessState.PartialPersonsRecognized);
                         }
                         else
                         {
-                            Console.WriteLine($"I have seen {person.match.name} in the past minutes");
+                            _leds.Update(ProcessState.AllPersonsRecognized);
+                        }
+
+                        List<Person> personsToProcess = new List<Person>();
+                        foreach (var person in persons)
+                        {
+                            bool seen;
+                            bool alreadySeen = _cache.TryGetValue(person.match.personId, out seen);
+                            if (!alreadySeen)
+                            {
+                                _cache.Set(person.match.personId, true, new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(1)));
+                                personsToProcess.Add(person);
+                            }
+                            else
+                            {
+                                Thread.Sleep(1000);
+                                WriteToConsole($"I have seen {person.match.name} in the past minutes");
+                            }
+                        }
+
+
+                        if (personsToProcess.Count > 0)
+                        {
+                            var replies = _replyBuilder.BuildReplies(persons);
+
+                            _ttsBuilder.BuildWavAsync(replies, wavFileName).GetAwaiter().GetResult();
+
+                            _soundPlayer.PlayOnPi(wavFileName);
                         }
                     }
-                    _leds.Update(ProcessState.AllPersonsRecognized);
-
-                    if (personsToProcess.Count > 0)
-                    {
-                        var replies = _replyBuilder.BuildReplies(persons);
-
-                        await _ttsBuilder.BuildWavAsync(replies, wavFileName);
-
-                        _soundPlayer.PlayOnPi(wavFileName);
-                    }
                 }
+                catch(Exception ex)
+                {
+                    WriteToConsole($"{ ex.Message},\n Stack trace: {ex.StackTrace}");
+                }
+
+
+                _leds.Update(ProcessState.Sleep);
+                WriteToConsole($" ---- End process -----");
             }
+        }
+
+
+        private void WriteToConsole(string message)
+        {
+            Console.WriteLine($"{message}: {DateTime.Now:dd:MM:yyyy HH:mm:ss.fff}");
         }
     }
 }
