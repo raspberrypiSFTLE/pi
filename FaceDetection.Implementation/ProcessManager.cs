@@ -87,6 +87,7 @@ namespace FaceDetection.Implementation
                     _leds.Update(ProcessState.Sleep);
                     byte[] imageContent;
 
+                    _soundPlayer.PlayOnPi("Data/camera-shutter");
                     imageContent = _piCamera.TakeSnapshot();
 
                     if (!Faces.IsDetectedFace(imageContent, 1))

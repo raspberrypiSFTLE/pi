@@ -24,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Data\camera-shutter.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Data\testimg.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
