@@ -21,6 +21,10 @@ namespace FaceDetection.Implementation
         public List<string> Puns { get; set; }
         public List<string> Identify { get; set; }
         public EmotionReplies EmotionReplies { get; set; }
+        public List<string> AllMaleReplies { get; set; }
+        public List<string> AllFemaleReplies { get; set; }
+        public List<string> UnrecognizedOneReplies { get; set; }
+        public List<string> UnrecognizedMultipleReplies { get; set; }
         public Dictionary<string, string> PersonalReplies { get; set; }
 
         public ReplyBag()
@@ -37,6 +41,10 @@ namespace FaceDetection.Implementation
             Intro = File.ReadAllLines("replies/intro.txt").ToList();
             Puns = File.ReadAllLines("replies/puns.txt").ToList();
             Identify = File.ReadAllLines("replies/identify.txt").ToList();
+            AllMaleReplies = File.ReadAllLines("replies/allmale.txt").ToList();
+            AllFemaleReplies = File.ReadAllLines("replies/allfemale.txt").ToList();
+            UnrecognizedOneReplies = File.ReadAllLines("replies/unrecognizedperson.txt").ToList();
+            UnrecognizedMultipleReplies = File.ReadAllLines("replies/unrecognizedpersonmultiple.txt").ToList();
 
             EmotionReplies = new EmotionReplies();
 

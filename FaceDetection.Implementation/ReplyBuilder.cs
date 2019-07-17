@@ -15,12 +15,28 @@ namespace FaceDetection.Implementation
         private readonly int ageYoungerPercentage = 80;
         private readonly int genderFemalePercentage = 60;
         private readonly int genderMalePercentage = 40;
+        private readonly int allMalePercentage = 50;
+        private readonly int allFemalePercentage = 50;
 
         public ReplyBuilder(ReplyBag replyBag)
         {
             _replyBag = replyBag;
             random = new Random();
         }
+
+        public List<Reply> BuildIntro()
+        {
+            var replies = new List<Reply>();
+
+            replies.Add(new Reply
+            {
+                Text = _replyBag.Intro[random.Next(0, _replyBag.Intro.Count - 1)],
+                Language = "en-US"
+            });
+
+            return replies;
+        }
+
         public List<Reply> BuildReplies(List<Person> persons)
         {
             var replies = new List<Reply>();
@@ -30,6 +46,7 @@ namespace FaceDetection.Implementation
             var recognizedPersonCount = persons.Count(p => !p.Unrecognized);
             var unrecognizedPersonCount = persons.Count(p => p.Unrecognized);
 
+            // No persons recognized
             if (persons.All(p => p.Unrecognized) || !persons.Any())
             {
                 textEN = _replyBag.Greetings[random.Next(0, _replyBag.Greetings.Count - 1)];
@@ -43,6 +60,7 @@ namespace FaceDetection.Implementation
                 return replies;
             }
 
+            // More than 1 person recognized
             if (recognizedPersonCount > 1)
             {
                 textEN = _replyBag.Greetings[random.Next(0, _replyBag.Greetings.Count - 1)];
@@ -65,7 +83,26 @@ namespace FaceDetection.Implementation
                         }
                     }
 
-                    if (unrecognizedPersonCount > 1)
+                    if (unrecognizedPersonCount == 0)
+                    {
+                        if (recognizedPersons.All(p => p.faceAttributes.gender == "male"))
+                        {
+                            randomValue = random.Next(100);
+                            if (randomValue < allMalePercentage)
+                            {
+                                textEN += ". " + _replyBag.AllMaleReplies[random.Next(0, _replyBag.AllMaleReplies.Count - 1)];
+                            }
+                        }
+                        else if (recognizedPersons.All(p => p.faceAttributes.gender == "female"))
+                        {
+                            randomValue = random.Next(100);
+                            if (randomValue < allFemalePercentage)
+                            {
+                                textEN += ". " + _replyBag.AllFemaleReplies[random.Next(0, _replyBag.AllFemaleReplies.Count - 1)];
+                            }
+                        }
+                    }
+                    else if (unrecognizedPersonCount > 1)
                     {
                         replies.Add(new Reply
                         {
@@ -73,7 +110,7 @@ namespace FaceDetection.Implementation
                             Language = "en-US"
                         });
                     }
-                    else if(unrecognizedPersonCount == 1)
+                    else if (unrecognizedPersonCount == 1)
                     {
                         replies.Add(new Reply
                         {
@@ -94,7 +131,7 @@ namespace FaceDetection.Implementation
             }
             else if (recognizedPersonCount == 1)
             {
-                var faceInformation = persons.Where(p=>!p.Unrecognized).First();
+                var faceInformation = persons.Where(p => !p.Unrecognized).First();
 
                 //custom reply for the special ones
                 if (_replyBag.PersonalReplies.ContainsKey(faceInformation.match.personId))
@@ -104,6 +141,8 @@ namespace FaceDetection.Implementation
                         Text = _replyBag.PersonalReplies.GetValueOrDefault(faceInformation.match.personId),
                         Language = "ro-RO"
                     });
+
+                    return replies;
 
                 }
                 else
@@ -198,32 +237,24 @@ namespace FaceDetection.Implementation
                     {
                         textEN += "... " + _replyBag.EmotionReplies.Hapiness[random.Next(0, _replyBag.EmotionReplies.Hapiness.Count - 1)];
                     }
-
-                    textEN += "... " + _replyBag.Goodbye[random.Next(0, _replyBag.Goodbye.Count - 1)];
-
-                    replies.Add(new Reply
-                    {
-                        Text = textEN,
-                        Language = "en-US"
-                    });
                 }
 
                 if (unrecognizedPersonCount > 1)
                 {
-                    replies.Add(new Reply
-                    {
-                        Text = textEN + ". The rest of you guys I don't know",
-                        Language = "en-US"
-                    });
+                    textEN += ". " + _replyBag.UnrecognizedMultipleReplies[random.Next(0, _replyBag.UnrecognizedMultipleReplies.Count - 1)];
                 }
                 else if (unrecognizedPersonCount == 1)
                 {
-                    replies.Add(new Reply
-                    {
-                        Text = textEN + ". I don't know the other person. Are you sure you're in the right place?",
-                        Language = "en-US"
-                    });
+                    textEN += ". " + _replyBag.UnrecognizedOneReplies[random.Next(0, _replyBag.UnrecognizedOneReplies.Count - 1)];
                 }
+
+                textEN += "... " + _replyBag.Goodbye[random.Next(0, _replyBag.Goodbye.Count - 1)];
+
+                replies.Add(new Reply
+                {
+                    Text = textEN,
+                    Language = "en-US"
+                });
 
                 return replies;
             }

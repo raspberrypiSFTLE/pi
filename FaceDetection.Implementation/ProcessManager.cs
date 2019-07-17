@@ -75,6 +75,10 @@ namespace FaceDetection.Implementation
         {
             string wavFileName = "sample";
 
+            var intro = _replyBuilder.BuildIntro();
+            _ttsBuilder.BuildWavAsync(intro, "intro").GetAwaiter().GetResult();
+            _soundPlayer.PlayOnPi("intro");
+
             while (true)
             {
                 try
@@ -132,7 +136,7 @@ namespace FaceDetection.Implementation
                             {
                                 personsToProcess.Remove(person);
                                 Thread.Sleep(1000);
-                                WriteToConsole($"I have seen {person.match.name} in the past minutes");
+                                WriteToConsole($"I have seen {person.match.name} in the past minute");
                             }
                         }
 
