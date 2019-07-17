@@ -12,9 +12,10 @@ namespace FaceDetection.Implementation
 
         static Mat testImage = Cv2.ImRead("Data/testimg.jpg");
 
+        static CascadeClassifier cascade = new CascadeClassifier("Models/haarcascade_frontalface_default.xml");
+
         private static Rect[] DetectFaceRectangles(Mat img, double scalingFactor)
         {
-            var cascade = new CascadeClassifier("Models/haarcascade_frontalface_default.xml");
             img.Resize(Size.Zero, scalingFactor, scalingFactor, InterpolationFlags.Area);
             Mat grey = new Mat();
             Cv2.CvtColor(img, grey, ColorConversionCodes.BGR2GRAY);
@@ -84,7 +85,6 @@ namespace FaceDetection.Implementation
 
         public static void FunnyFaces(Mat img)
         {
-            var cascade = new CascadeClassifier("Models/haarcascade_frontalface_default.xml");
             Mat grey = new Mat();
             Cv2.CvtColor(img, grey, ColorConversionCodes.BGR2GRAY);
 
